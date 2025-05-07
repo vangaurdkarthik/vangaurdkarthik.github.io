@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'TurismoCF-DemiBold';
+    src: url('fonts/TurismoCF-DemiBold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: sans-serif;
+  }

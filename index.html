@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Digital Signage</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
+    
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      
       background: #042EF2;
       color: white;
     }
@@ -63,13 +65,21 @@
       flex-wrap: wrap;
     }
     .text-col {
+      font-family: 'TurismoCF-DemiBold', sans-serif;
       font-size: 48px;
       font-weight: bold;
       line-height: 1.2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 300px;
+      height: 25vw;
+      background-image: url('blue-streaks.jpg');
+      background-size: 100% 100%; /* Width: 50%, Height: 100% */
+  background-repeat: no-repeat;
     }
     .video-col {
-       
+      height: 38vw;
         width: 45vw;
         max-width: 450px;
   display: flex;
@@ -81,6 +91,7 @@
   border: 2px solid  #ffffff;
   background: #fff;
   border-radius: 10px;
+  margin-top: 10px;
 }
 
 .video-box {
@@ -95,7 +106,7 @@
 }
 .video-box video{
   width: 100%;
-  height: 100%;
+  height: 38vw;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -105,6 +116,8 @@
       flex-direction: column;
       align-items: center;
       width: 320px;
+      height: 25vw;
+     
     }
     .qr-image-full {
   width: 300px;
@@ -246,14 +259,14 @@
       MAKE<br/>MONEY<br/>MATTER
     </div>
     <div class="video-col">
-      <div class="video-box"><video    autoplay muted loop playsinline>
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video></div>
-      <div class="video-box"><video    autoplay muted loop playsinline>
-        <source src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video></div>
+      <div class="video-box">
+        <video id="videoPlayer"    autoplay muted  playsinline controls >
+          <source src="videos/video1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        
+        </div>
+     
     </div>
     <div class="qr-col">
         <img src="right-image.jpg" alt="QR Download" class="qr-image-full" />
@@ -276,6 +289,34 @@
     </div>
     </div>
   </div>
+  <script>
+    const videos = [
+      "videos/video1.mp4",
+      "videos/video2.mp4",
+      "videos/video3.mp4",
+      "videos/video4.mp4"
+    ];
+
+    let currentVideo = 0;
+    const videoPlayer = document.getElementById('videoPlayer');
+
+    // Function to change video source
+    function playVideo(index) {
+      videoPlayer.src = videos[index];
+      videoPlayer.load();
+      videoPlayer.muted = false;
+      videoPlayer.play();
+    }
+
+    // When a video ends, go to the next one
+    videoPlayer.addEventListener('ended', () => {
+      currentVideo = (currentVideo + 1) % videos.length; // loop to first after last
+      playVideo(currentVideo);
+    });
+
+    // Initial load
+    playVideo(currentVideo);
+  </script>
 
 </body>
 </html>
