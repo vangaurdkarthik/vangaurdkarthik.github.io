@@ -117,14 +117,15 @@
       flex-direction: column;
       align-items: center;
      width: 30%;
+     height: 38vw;
     
-     
     }
     .qr-image-full {
   width: 300px;
   max-width: 100%;
   height: auto;
   display: block;
+ 
 }
     .phone-img {
       width: 200px;
@@ -281,7 +282,7 @@
     <div class="top-strip-wrapper">
        
       <div class="top-strip">
-        <div class="time">08.30 PM</div>
+        <div class="time" id="clock">08.30 PM</div>
         
         <div class="breaking-news">BREAKING NEWS</div>
       </div>
@@ -361,6 +362,24 @@
   }
 
   loadTicker();
+</script>
+<script>
+  function updateClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+   /*  const seconds = now.getSeconds().toString().padStart(2, '0'); */
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12; // convert '0' to '12'
+
+    document.getElementById('clock').textContent = 
+      `${hours}:${minutes} ${ampm}`;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock(); // initialize immediately
 </script>
 </body>
 </html>
