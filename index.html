@@ -243,6 +243,9 @@
         transform: translateX(-100%);
       }
     }
+    .news-item{
+      padding-right: 20px;
+    }
   </style>
 </head>
 <body>
@@ -317,36 +320,47 @@
 
     // Initial load
     playVideo(currentVideo);
-
-
-      // Simulated API response (replace with fetch call to real API if needed)
-      const response = {
-      "feed_data": {
-        "NSE_1333": {
-          "exchange": "NSE",
-          "last_traded_price": 1697.7,
-          "closing_price": 1697.7
-        },
-        "NSE_2885": {
-          "exchange": "NSE",
-          "last_traded_price": 1216.1,
-          "closing_price": 1216.1
-        }
-      }
-    };
-
-    const feed = response.feed_data;
-    const tickerDiv = document.getElementById('ticker');
-
-    const items = Object.keys(feed).map(key => {
-      const stock = feed[key];
-      const price = stock.last_traded_price;
-      const change = (price - stock.closing_price).toFixed(2);
-      return `<span class="ticker-item">${key}: ₹${price} (${change})</span>`;
-    });
-
-    tickerDiv.innerHTML = items.join(' — ');
+ 
   </script>
+<script>
+  async function loadTicker() {
+    try {
+      const response = await fetch('https://f47478f1-00f0-4396-b1ff-949709f4b4a4.mock.pstmn.io/getBulkFeedData');
+      const responsedata = await response.json();
+      const data = responsedata.feed_data
 
+      const ticker = document.getElementById('ticker');
+      ticker.innerHTML = '';
+
+      Object.keys(data).forEach(symbol => {
+        const item = data[symbol];
+        const ltp = parseFloat(item.last_traded_price);
+        const open = parseFloat(item.open_price);
+
+        if (isNaN(ltp) || isNaN(open) || open === 0) return;
+
+        const changeVal = ltp - open;
+        const pChangeVal = (changeVal / open) * 100;
+
+        const change = changeVal.toFixed(2);
+        const pChange = pChangeVal.toFixed(2);
+        const ltpFixed = ltp.toFixed(2);
+
+        const isGain = changeVal >= 0;
+
+        const span = document.createElement('span');
+        span.className = 'news-item ' + (isGain ? 'gain' : 'loss');
+        span.textContent = `${symbol} → ₹${ltpFixed} (${change} | ${pChange}%) `;
+
+        ticker.appendChild(span);
+      });
+
+    } catch (err) {
+      console.error('Failed to load ticker data:', err);
+    }
+  }
+
+  loadTicker();
+</script>
 </body>
 </html>
