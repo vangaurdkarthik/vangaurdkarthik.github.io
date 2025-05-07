@@ -248,7 +248,7 @@
 <body>
   <div class="top-bar">
     <div class="ticker-wrapper">
-      <div class="ticker-text">
+      <div id="ticker" class="ticker-text">
         Nifty 50 at 22,500 | Sensex surges 480 pts | IT stocks lead rally | Market eyes RBI policy | Rupee steady at 82.90 | India VIX dips 2%...
       </div>
     </div>
@@ -317,6 +317,35 @@
 
     // Initial load
     playVideo(currentVideo);
+
+
+      // Simulated API response (replace with fetch call to real API if needed)
+      const response = {
+      "feed_data": {
+        "NSE_1333": {
+          "exchange": "NSE",
+          "last_traded_price": 1697.7,
+          "closing_price": 1697.7
+        },
+        "NSE_2885": {
+          "exchange": "NSE",
+          "last_traded_price": 1216.1,
+          "closing_price": 1216.1
+        }
+      }
+    };
+
+    const feed = response.feed_data;
+    const tickerDiv = document.getElementById('ticker');
+
+    const items = Object.keys(feed).map(key => {
+      const stock = feed[key];
+      const price = stock.last_traded_price;
+      const change = (price - stock.closing_price).toFixed(2);
+      return `<span class="ticker-item">${key}: ₹${price} (${change})</span>`;
+    });
+
+    tickerDiv.innerHTML = items.join(' — ');
   </script>
 
 </body>
